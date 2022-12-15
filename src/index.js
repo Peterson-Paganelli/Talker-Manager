@@ -56,6 +56,23 @@ validateAge, validateTalk, validateRate, async (req, res) => {
   res.status(201).json(newTalker);
 });
 
+app.put('/talker/:id', ValidateAuthorization, validateName, 
+validateAge, validateTalk, validateRate, async (req, res) => {
+  const { id } = req.params;
+  const { name, age, talk } = req.body;
+  const talker = await readFile();
+  const editedTalker = {
+    id: Number(id),
+    name,
+    age,
+    talk,
+  };
+  const editedList = talker.filter((tal) => Number(tal.id) !== Number(id));
+  const newList = [...editedList, editedTalker];
+  await writeFile('./src/talker.json', JSON.stringify(newList));
+  res.status(200).json(editedTalker);
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
