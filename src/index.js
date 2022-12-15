@@ -73,6 +73,14 @@ validateAge, validateTalk, validateRate, async (req, res) => {
   res.status(200).json(editedTalker);
 });
 
+app.delete('/talker/:id', ValidateAuthorization, async (req, res) => {
+  const { id } = req.params;
+  const talker = await readFile();
+  const editedList = talker.filter((tal) => Number(tal.id) !== Number(id));
+  await writeFile('./src/talker.json', JSON.stringify(editedList));
+  res.status(204).json();
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
