@@ -1,12 +1,12 @@
-function validatedWatched(req, res) {
-  const { talk } = req.body;
-  if (!(talk.watchedAt)) {
-    return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
-  }
-  if (!(/(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/).test(talk.watchedAt)) {
-    return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
-  }
-}
+// function validatedWatched(req, res) {
+//   const { talk } = req.body;
+//   if (!(talk.watchedAt)) {
+//     return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
+//   }
+//   if (!(/(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/).test(talk.watchedAt)) {
+//     return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
+//   }
+// }
 
 function validateRate(req, res) {
     const { talk } = req.body;
@@ -23,7 +23,12 @@ function validateTalk(req, res, next) {
   if (talk === undefined) {
     return res.status(400).json({ message: 'O campo "talk" é obrigatório' });
   }
-  validatedWatched(req, res);
+  if (!(talk.watchedAt)) {
+    return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
+  }
+  if (!(/(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d/).test(talk.watchedAt)) {
+    return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
+  }
   validateRate(req, res);
   next();
 }
