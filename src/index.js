@@ -22,6 +22,13 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 }); 
 
+app.get('/talker/search', ValidateAuthorization, async (req, res) => {
+  const { q } = req.query;
+  const talker = await readFile();
+  const searchTalker = talker.filter((tal) => tal.name.includes(q));
+  res.status(200).json(searchTalker);
+});
+
 app.get('/talker', async (req, res) => {
   const talker = await readFile();
   res.status(200).json(talker);
